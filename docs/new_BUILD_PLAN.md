@@ -1,4 +1,6 @@
-# Sentinel — Step-by-Step Build Plan
+> **Note:** This is the updated V2 documentation.
+
+# Sentinel V2 — Step-by-Step Build Plan
 
 Companion to [PRD.md](PRD.md). Ordered so that a **complete, submittable twenty-case answer set exists by the end of Step 7**. Everything after that raises the score; nothing after that is load-bearing.
 
@@ -105,9 +107,9 @@ Also create a Savanna workspace with auto-start/auto-stop enabled and load the s
 `graph/schema.gsql` — create the vertices and edges from PRD §6.1/6.2. Sketch:
 
 ```gsql
-CREATE GRAPH Sentinel()
-USE GRAPH Sentinel
-CREATE SCHEMA_CHANGE JOB init FOR GRAPH Sentinel {
+CREATE GRAPH Sentinel V2()
+USE GRAPH Sentinel V2
+CREATE SCHEMA_CHANGE JOB init FOR GRAPH Sentinel V2 {
   ADD VERTEX Customer(PRIMARY_ID customer_id STRING, n_cards INT, first_seen DATETIME, last_seen DATETIME);
   ADD VERTEX Card(PRIMARY_ID card_id STRING, customer_id STRING, network STRING, card_type STRING,
                   home_region STRING, median_amt DOUBLE, p95_amt DOUBLE, n_txns INT, top_products STRING);
@@ -148,7 +150,7 @@ CREATE SCHEMA_CHANGE JOB init FOR GRAPH Sentinel {
 RUN SCHEMA_CHANGE JOB init
 ```
 
-**Exit test:** `ls` in GraphStudio / `gsql -g Sentinel "ls"` shows every vertex and edge.
+**Exit test:** `ls` in GraphStudio / `gsql -g Sentinel V2 "ls"` shows every vertex and edge.
 
 ---
 
@@ -220,7 +222,7 @@ That hand-written file is your **golden fixture**. The agent's job is to reprodu
 Write the sixteen queries from PRD §7.1 as installed GSQL queries in `graph/queries/`. Two worked shapes:
 
 ```gsql
-CREATE QUERY card_window(STRING card_id, DATETIME center, INT hours) FOR GRAPH Sentinel {
+CREATE QUERY card_window(STRING card_id, DATETIME center, INT hours) FOR GRAPH Sentinel V2 {
   SetAccum<VERTEX<Transaction>> @@hits;
   Start = {Card.*};
   C = SELECT c FROM Start:c WHERE c.card_id == card_id;
@@ -231,7 +233,7 @@ CREATE QUERY card_window(STRING card_id, DATETIME center, INT hours) FOR GRAPH S
   PRINT T;
 }
 
-CREATE QUERY device_neighbors(STRING device_key, INT days, DATETIME center) FOR GRAPH Sentinel {
+CREATE QUERY device_neighbors(STRING device_key, INT days, DATETIME center) FOR GRAPH Sentinel V2 {
   D = {DeviceProfile.*};
   Dev = SELECT d FROM D:d WHERE d.device_key == device_key;
   Txns = SELECT t FROM Dev:d -(DEVICE_USED_BY:e)- Transaction:t
@@ -330,7 +332,7 @@ Implement the four branches from PRD §7.4 as pure functions over ledger state. 
 
 Loop guards: max 25 tool calls, max one evidence-request round (the format has exactly `initial` and `final`), hard timeout. Record `tool_calls`, `tokens`, `latency_s` honestly — they are fields in the answer file.
 
-**Order the run so memory shows.** Process the twenty cases in chronological `opened_at` order, writing each `Case` back before the next starts. Then a later case can and will cite an earlier Sentinel case in `similar_prior_cases`. Say this in the demo; it is the difference between claiming memory and demonstrating it.
+**Order the run so memory shows.** Process the twenty cases in chronological `opened_at` order, writing each `Case` back before the next starts. Then a later case can and will cite an earlier Sentinel V2 case in `similar_prior_cases`. Say this in the demo; it is the difference between claiming memory and demonstrating it.
 
 ```bash
 python -m sentinel run --all --order chronological --out cases/

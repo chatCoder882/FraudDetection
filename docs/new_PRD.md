@@ -1,7 +1,9 @@
-# PRD — **Sentinel**: An Agentic Fraud Investigator on TigerGraph
+> **Note:** This is the updated V2 documentation.
+
+# PRD — **Sentinel V2**: An Agentic Fraud Investigator on TigerGraph
 
 **Version** 1.0 · **Owner** Rishit Rastogi · **Target** TigerGraph Agentic Fraud Investigation, Hacker House Goa
-**Status** Draft for build
+**Status** Final Version
 
 ---
 
@@ -15,7 +17,7 @@ The naive fix — "auto-block anything the model scores above 0.7" — is worse 
 
 ## 2. What we are building
 
-**Sentinel** is an agentic fraud investigator. Given a trigger — a model score, a customer complaint, or an analyst request — it runs a bounded investigation loop over a TigerGraph knowledge graph, accumulates evidence into a **calibrated probability ledger**, retrieves prior closed cases as memory, decides under a **deterministic policy engine** whether it has enough to act, requests more evidence when it does not, and emits a complete case file, a next-best-action pair (before and after evidence), and a SAR when policy requires one — every claim traceable to a named graph query or document.
+**Sentinel V2** is an agentic fraud investigator. Given a trigger — a model score, a customer complaint, or an analyst request — it runs a bounded investigation loop over a TigerGraph knowledge graph, accumulates evidence into a **calibrated probability ledger**, retrieves prior closed cases as memory, decides under a **deterministic policy engine** whether it has enough to act, requests more evidence when it does not, and emits a complete case file, a next-best-action pair (before and after evidence), and a SAR when policy requires one — every claim traceable to a named graph query or document.
 
 ### 2.1 Product principles
 
@@ -26,17 +28,17 @@ The naive fix — "auto-block anything the model scores above 0.7" — is worse 
 | P3 | **Calibration over confidence.** | `fraud_probability` is computed from an evidence log-odds ledger whose weights are fitted on the 5,565 closed cases — not guessed by a model that has seen the word "suspicious". |
 | P4 | **Uncertainty is a first-class answer.** | `uncertain` + `VERIFY_WITH_CUSTOMER` + `ESCALATE_TO_ANALYST` is a winning output on ambiguous cases, and the product is designed to reach it, not to avoid it. |
 | P5 | **Every claim carries a receipt.** | Each evidence item names its source, the exact query invocation, and the entity IDs it rests on. An analyst can re-run any line of the case. |
-| P6 | **Memory compounds.** | Closed cases seed memory; every case Sentinel closes is written back to the graph with an embedding, so case 20 can retrieve case 3. |
+| P6 | **Memory compounds.** | Closed cases seed memory; every case Sentinel V2 closes is written back to the graph with an embedding, so case 20 can retrieve case 3. |
 
 ### 2.2 Non-goals
 
 - Not a fraud-scoring ML model. The bank already has one; its output is an *input*.
-- Not a real-time authorization system. Sentinel investigates alerts, it does not sit in the payment path.
+- Not a real-time authorization system. Sentinel V2 investigates alerts, it does not sit in the payment path.
 - Not autonomous execution of high-impact actions. `L1`/`L2` actions are *recommended and queued*, never executed.
 
 ## 3. Users and their jobs
 
-| User | Job to be done | What Sentinel gives them |
+| User | Job to be done | What Sentinel V2 gives them |
 |---|---|---|
 | **Fraud analyst (primary)** | Decide on an alert in minutes with evidence they can defend to a manager | A case file with a probability trajectory, an evidence ledger with receipts, and a pre-drafted action set |
 | **Fraud manager (L2)** | Approve or reject blocks and regulatory filings | An approval queue showing exposure, route justification, and the SAR narrative ready to read |
@@ -177,7 +179,7 @@ Every assumption lands in `evidence_requests[].assumed_response` with its basis,
 
 ### 7.5 Undocumented pattern discovery
 
-The README documents five patterns and says plainly that not every pattern in the data is documented; R9 rewards naming what you find. Sentinel runs a standing discovery pass over the exam window: Louvain on the device–email–region co-occurrence projection, then flags components that are (a) multi-customer, (b) time-concentrated, (c) carrying above-baseline risk scores or amount anomalies, and (d) matching none of the five pattern signatures. An exam case landing in such a component gets `pattern = undocumented`, a written `pattern_description`, and R9's action triple. Rings discovered outside the 20 cases go to the optional folder for Innovation credit.
+The README documents five patterns and says plainly that not every pattern in the data is documented; R9 rewards naming what you find. Sentinel V2 runs a standing discovery pass over the exam window: Louvain on the device–email–region co-occurrence projection, then flags components that are (a) multi-customer, (b) time-concentrated, (c) carrying above-baseline risk scores or amount anomalies, and (d) matching none of the five pattern signatures. An exam case landing in such a component gets `pattern = undocumented`, a written `pattern_description`, and R9's action triple. Rings discovered outside the 20 cases go to the optional folder for Innovation credit.
 
 ## 8. The interface
 
@@ -191,7 +193,7 @@ A three-pane analyst console, built so a judge understands it in fifteen seconds
 
 **SAR tab.** The narrative rendered as a filing, with subjects, amounts, and dates.
 
-**Memory tab.** Which prior cases were retrieved and why they matched — and the demo moment, cases *Sentinel itself* closed earlier in the run being retrieved for a later one.
+**Memory tab.** Which prior cases were retrieved and why they matched — and the demo moment, cases *Sentinel V2 itself* closed earlier in the run being retrieved for a later one.
 
 ## 9. Deliverables
 
@@ -223,7 +225,7 @@ A three-pane analyst console, built so a judge understands it in fifteen seconds
 - **0:00–0:25** — The problem in one sentence over the console: twenty alerts, half legitimate, the model score useless on its own.
 - **0:25–1:35 — Act I, a real fraud (card testing).** Hit Investigate. Steps stream: baseline → window → testing probe fires → device is New and shared with another card → prior case CC-xxxx retrieved. Probability climbs 0.20 → 0.78. Initial actions appear with routes. The agent requests verification; the assumption is shown; probability → 0.89; final actions add `BLOCK_CARD` (L2, exposure over $2,500) and `FILE_REPORT`. Click the L2 action: blocked, moved to the approval inbox. Approve as manager; the case closes. Show the SAR.
 - **1:35–2:35 — Act II, the trap.** A 0.90-risk-score case that is legitimate. The recurring-charge probe and the trip-not-clone region check drive probability *down* to 0.09; verdict `legitimate`; actions `CLOSE_NO_FRAUD` and `WARN_CUSTOMER`. "The model said 0.90. The graph said no, and here is why." This is the moment that wins accuracy points.
-- **2:35–3:35 — Act III, the ring.** The analyst-request case. `ring_expand` lights up a component of cards on one device profile. The undocumented pattern is named and described. R9 actions follow. Then the memory moment: this case cites a case Sentinel closed four cases ago.
+- **2:35–3:35 — Act III, the ring.** The analyst-request case. `ring_expand` lights up a component of cards on one device profile. The undocumented pattern is named and described. R9 actions follow. Then the memory moment: this case cites a case Sentinel V2 closed four cases ago.
 - **3:35–4:15** — Architecture diagram; thirty seconds on the ledger and policy-as-code; the graph in TigerGraph showing `Case` vertices written back.
 - **4:15–4:30** — All twenty cases green in the eval harness. Repo link.
 

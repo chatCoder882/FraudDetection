@@ -1,3 +1,5 @@
+> **Note:** This is the updated V2 documentation.
+
 # Loading the dataset into TigerGraph Savanna
 
 Two commands, from a clean checkout:

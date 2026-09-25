@@ -1,3 +1,5 @@
+> **Note:** This is the updated V2 documentation.
+
 # The tool layer: 16 GSQL queries, exposed over MCP
 
 Step 5 of the build plan. The agent's entire view of the graph is these sixteen
@@ -29,7 +31,7 @@ python scripts/setup_mcp.py --refresh # tokens expire; re-mint
 | 13 | `velocity_probe` | Count, spend, distinct regions and devices in a window |
 | 14 | `customer_case_history` | This customer's closed cases **and their denial track record** |
 | 15 | `similar_prior_cases` | Structural retrieval over the 5,565 closed cases |
-| 16 | `case_memory_for_card` | Bank closed cases **and cases Sentinel wrote earlier in the run** |
+| 16 | `case_memory_for_card` | Bank closed cases **and cases Sentinel V2 wrote earlier in the run** |
 
 Two conventions worth knowing:
 
@@ -100,7 +102,7 @@ Credentials stay in `.env`, which the server loads from the working directory an
 which is gitignored. It accepts `TG_SECRET` or `TG_API_TOKEN`; both were tested
 and both work. `scripts/setup_mcp.py` mints the token from the Savanna secret and
 keeps the MCP-named variables (`TG_GRAPHNAME`, `TG_GS_PORT`, `TG_API_TOKEN`) in
-sync with Sentinel's own (`TG_GRAPH`, `TG_GSQL_PORT`, `TG_SECRET`) inside a single
+sync with Sentinel V2's own (`TG_GRAPH`, `TG_GSQL_PORT`, `TG_SECRET`) inside a single
 managed block.
 
 The server exposes 69 tools; the ones that matter here are

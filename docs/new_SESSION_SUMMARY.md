@@ -1,4 +1,6 @@
-# Session summary — Sentinel build, 2026-09-20
+> **Note:** This is the updated V2 documentation.
+
+# Session summary — Sentinel V2 build, 2026-09-20
 
 Everything completed so far on the TigerGraph Agentic Fraud Investigation
 challenge, what state each piece is in, and what is left.

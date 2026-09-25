@@ -1,7 +1,9 @@
+> **Note:** This is the updated V2 documentation.
+
 # Calibration: how `fraud_probability` is computed
 
 Most submissions will ask a model "how likely is this fraud, 0 to 1?" and get
-0.85 for anything that reads as alarming. Sentinel accumulates log-odds from
+0.85 for anything that reads as alarming. Sentinel V2 accumulates log-odds from
 likelihood ratios fitted on the bank's own closed cases.
 
 ```

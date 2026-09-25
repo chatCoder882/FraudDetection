@@ -1,3 +1,5 @@
+> **Note:** This is the updated V2 documentation.
+
 # Hand investigation: HHG-003
 
 Step 4 of the build plan, done before any agent code. The output is
