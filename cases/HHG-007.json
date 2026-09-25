@@ -1,0 +1,85 @@
+{
+  "case_id": "HHG-007",
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.87,
+    "pattern": "none",
+    "pattern_description": "",
+    "affected_txn_ids": [
+      "3514948"
+    ],
+    "first_suspicious_txn_id": "3514948",
+    "connected_card_ids": [],
+    "connected_device_profiles": [],
+    "exposure_usd": 111.92,
+    "evidence": [
+      {
+        "claim": "Flagged transaction 3514948 is $111.92, channel in_person, risk score 0.87.",
+        "source": "graph",
+        "ref": "query:txn_detail(txn_id=3514948)",
+        "entity_ids": [
+          "3514948",
+          "C09933-K2"
+        ]
+      },
+      {
+        "claim": "Card history contains 2788 transactions; amount-band history contains 0 prior matches.",
+        "source": "graph",
+        "ref": "query:card_baseline(card_id=C09933-K2)",
+        "entity_ids": [
+          "C09933-K2"
+        ]
+      },
+      {
+        "claim": "Billing region 264.0 has 0 prior transactions before the alert.",
+        "source": "graph",
+        "ref": "query:region_novelty(card_id=C09933-K2, region=264.0)",
+        "entity_ids": [
+          "C09933-K2",
+          "264.0"
+        ]
+      }
+    ],
+    "similar_prior_cases": [
+      "CC-3431",
+      "CC-1867",
+      "CC-1818",
+      "CC-5513",
+      "CC-0948"
+    ],
+    "summary": "Investigated 3514948 for customer C09933 using transaction, card baseline, region, and closed-case evidence.",
+    "written_to_graph": false,
+    "graph_case_id": ""
+  },
+  "evidence_requests": [],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "3a: a case is opened once fraud probability reaches 0.30 (assessed 0.87) or evidence has been requested"
+      }
+    ],
+    "final": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "3a: a case is opened once fraud probability reaches 0.30 (assessed 0.87) or evidence has been requested"
+      }
+    ],
+    "what_changed": "nothing"
+  },
+  "sar": {
+    "file": false,
+    "reason": "3a: no report. exposure $111.92 is at or below $1,000; the activity connects to no shared device profile, region cluster or other customer's fraud.",
+    "narrative": "",
+    "subjects": [],
+    "total_amount_usd": 0,
+    "activity_dates": []
+  },
+  "stop_reason": "Evidence collected; no customer response was available.",
+  "tool_calls": 6,
+  "tokens": 0,
+  "latency_s": 3.981
+}
